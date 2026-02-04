@@ -60,10 +60,10 @@ const option = computed(() => ({
   xAxis: {
     type: 'category',
     data: props.labels,
-    axisLabel: {
-      rotate: 45,
-      formatter: (value: string) => value,
-    },
+    // axisLabel: {
+    //   rotate: 45,
+    //   formatter: (value: string) => value,
+    // },
   },
   yAxis: {
     type: 'value',
@@ -75,7 +75,7 @@ const option = computed(() => ({
     {
       name: 'Income',
       type: 'bar',
-      stack: 'total',
+      // stack: 'total',
       data: props.income,
       itemStyle: { color: '#4caf50' },
     },

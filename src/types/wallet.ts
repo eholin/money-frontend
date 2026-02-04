@@ -1,6 +1,7 @@
 export interface MonthlyWalletData {
     month: string;
     balance: number;
+    incrementalBalance: number;
     totalIncome: number;
     totalExpense: number;
     totalInvested: number;

@@ -34,5 +34,8 @@ export const useDashboardStore = defineStore('dashboard', {
 
         monthlyInvested: (state) =>
             state.summary?.monthlyData.map(m => m.totalInvested) ?? [],
+
+        incrementalBalance: (state) =>
+            state.summary?.monthlyData.map(m => m.incrementalBalance) ?? [],
     },
 });

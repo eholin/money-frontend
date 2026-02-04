@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <h1>Wallet summary</h1>
+    <h2>Wallet summary</h2>
 
     <div v-if="summary" class="summary">
       <p>Currency: {{ summary.currency }}</p>
@@ -18,6 +18,7 @@
         currency="₽"
     />
 
+    <!--
     <MonthlyBarChart
         title="Monthly income"
         :labels="months"
@@ -31,6 +32,7 @@
         :values="monthlyExpense"
         currency="₽"
     />
+    -->
 
     <MonthlyBarChart
         title="Monthly balance"
@@ -38,13 +40,32 @@
         :values="monthlyBalance"
         currency="₽"
     />
+
+    <MonthlyBarChart
+        title="Incremental balance"
+        :labels="months"
+        :values="incrementalBalance"
+        currency="₽"
+    />
   </div>
 </template>
 
+<style scoped>
+.col {
+  width: 49%;
+}
+
+.dashboard-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+</style>
+
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useDashboardStore } from '@/stores/dashboard.store';
+import {onMounted} from 'vue';
+import {storeToRefs} from 'pinia';
+import {useDashboardStore} from '@/stores/dashboard.store';
 import MonthlyBarChart from '@/components/MonthlyBarChart.vue';
 import MonthlyStackedBarChart from '@/components/MonthlyStackedBarChart.vue';
 
@@ -55,6 +76,7 @@ const {
   monthlyIncome,
   monthlyExpense,
   monthlyBalance,
+  incrementalBalance,
 } = storeToRefs(store);
 
 onMounted(() => {
