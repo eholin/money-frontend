@@ -7,6 +7,15 @@ export interface MonthlyWalletData {
     totalInvested: number;
 }
 
+export interface FinancialCategorySummary {
+    '@type': string;
+    '@id': string;
+    id: number;
+    name: string,
+    currency: string;
+    total: number;
+}
+
 export interface WalletSummary {
     currency: string;
     balance: number;
@@ -15,4 +24,5 @@ export interface WalletSummary {
     totalInvested: number;
     startDate: string;
     monthlyData: MonthlyWalletData[];
+    expenseCategories: FinancialCategorySummary[];
 }
