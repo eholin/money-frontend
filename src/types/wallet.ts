@@ -8,8 +8,8 @@ export interface MonthlyWalletData {
 }
 
 export interface FinancialCategorySummary {
-    '@type': string;
     '@id': string;
+    '@type': string;
     id: number;
     name: string,
     currency: string;

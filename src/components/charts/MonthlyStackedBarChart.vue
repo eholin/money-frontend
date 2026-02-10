@@ -82,7 +82,7 @@ const option = computed(() => ({
     {
       name: 'Expense',
       type: 'bar',
-      stack: 'total',
+      // stack: 'total',
       data: props.expense,
       itemStyle: { color: '#f44336' },
     },

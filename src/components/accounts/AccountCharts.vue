@@ -2,7 +2,7 @@
 import {computed} from 'vue'
 import MonthlyBarChart from '@/components/MonthlyBarChart.vue'
 import type {MonthlySummary} from '@/types/account'
-import MonthlyStackedBarChart from "@/components/MonthlyStackedBarChart.vue";
+import MonthlyStackedBarChart from "@/components/charts/MonthlyStackedBarChart.vue";
 
 const props = defineProps<{
   monthlyData: MonthlySummary[]

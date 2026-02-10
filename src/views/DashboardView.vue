@@ -19,6 +19,14 @@
           currency="₽"
       />
 
+      <MonthlyCategoriesStackedBarChart
+          title="Ежемесячный доход по категориям"
+          :data="allCategoriesMonthlyIncome"
+      />
+
+      <p>{{ JSON.stringify(allCategoriesMonthlyIncome) }}</p>
+      <p>{{ JSON.stringify(categoriesIncomeMonths) }}</p>
+
       <!--
       <MonthlyBarChart
           title="Monthly income"
@@ -52,11 +60,18 @@
 
     <div class="dashboard col">
       <h2>Доходы и расходы по категориям</h2>
-        <CategoriesPieChart
-            title="Расходы по категориям"
-            currency="₽"
-            :data="pieChartDataSorted"
-        />
+      <CategoriesPieChart
+          title="Расходы по категориям"
+          currency="₽"
+          :data="pieChartDataSorted"
+      />
+
+      <CategoriesPieChart
+          title="Доходы по категориям"
+          currency="₽"
+          :data="incomePieChartDataSorted"
+      />
+
     </div>
   </div>
 </template>
@@ -71,6 +86,7 @@
   justify-content: space-between;
   align-items: flex-start;
 }
+
 .chart-canvas {
   height: 350px;
   width: 100%;
@@ -82,12 +98,19 @@ import {onMounted} from 'vue';
 import {storeToRefs} from 'pinia';
 import {useDashboardStore} from '@/stores/dashboard.store';
 import MonthlyBarChart from '@/components/MonthlyBarChart.vue';
-import MonthlyStackedBarChart from '@/components/MonthlyStackedBarChart.vue';
+import MonthlyStackedBarChart from '@/components/charts/MonthlyStackedBarChart.vue';
 import {useCategoriesStore} from "@/stores/categories.store.ts";
 import CategoriesPieChart from "@/components/charts/CategoriesPieChart.vue";
+import {useCategoriesExpenseStore} from "@/stores/categories.expense.store.ts";
+import {useCategoriesIncomeStore} from "@/stores/categories.income.store.ts";
+import {useCategoriesMonthlyIncomeStore} from "@/stores/categories.monthly.income.store.ts";
+import MonthlyCategoriesStackedBarChart from "@/components/charts/MonthlyCategoriesStackedBarChart.vue";
 
 const store = useDashboardStore();
 const categories = useCategoriesStore();
+const categoriesExpenseStore = useCategoriesExpenseStore();
+const categoriesIncomeStore = useCategoriesIncomeStore();
+const categoriesMonthlyIncomeStore = useCategoriesMonthlyIncomeStore();
 const {
   summary,
   months,
@@ -96,14 +119,27 @@ const {
   monthlyBalance,
   incrementalBalance,
   pieChartData,
-  pieChartDataSorted,
+  pieChartDataSorted
 } = storeToRefs(store);
 
 const {allCategories} = storeToRefs(categories);
 
+const {
+  incomePieChartData,
+  incomePieChartDataSorted
+} = storeToRefs(categoriesIncomeStore);
+
+const {
+  categoriesIncomeMonths,
+  allCategoriesMonthlyIncome
+} = storeToRefs(categoriesMonthlyIncomeStore);
+
 onMounted(() => {
   store.loadSummary();
   categories.loadCategories();
+  categoriesExpenseStore.loadCategories();
+  categoriesIncomeStore.loadCategories();
+  categoriesMonthlyIncomeStore.loadCategoriesMonthly();
 });
 
 </script>
