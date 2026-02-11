@@ -18,6 +18,7 @@ import {
 import {CanvasRenderer} from 'echarts/renderers';
 import VChart from 'vue-echarts';
 import type {CategoryMonthlySummary} from "@/types/categories.ts";
+import {formatCurrency} from "@/utils/format.ts";
 
 use([
   BarChart,
@@ -30,7 +31,8 @@ use([
 
 const props = defineProps<{
   title: string;
-  data: CategoryMonthlySummary[]
+  data: CategoryMonthlySummary[];
+  priority: Record<number, number>;
 }>();
 
 
@@ -38,13 +40,6 @@ const option = computed(() => buildStackedBarOption(props.data))
 
 function buildStackedBarOption(source: CategoryMonthlySummary[]) {
   const months = source.map(m => m.month)
-
-  const CATEGORY_PRIORITY: Record<number, number> = {
-    5: 1,   // Доход — всегда снизу
-    22: 2,  // Проценты
-    3: 3,   // Кэшбек
-    37: 4,  // Вывод с брокерского счета
-  }
 
   // categoryId → series
   const seriesMap = new Map<number, any>()
@@ -57,7 +52,7 @@ function buildStackedBarOption(source: CategoryMonthlySummary[]) {
           name: category.name,
           type: 'bar',
           stack: 'income',
-          emphasis: { focus: 'series' },
+          emphasis: {focus: 'series'},
           data: Array(source.length).fill(0),
         })
       }
@@ -69,16 +64,15 @@ function buildStackedBarOption(source: CategoryMonthlySummary[]) {
   const series = Array.from(seriesMap.values())
 
   series.sort((a, b) => {
-    const pa = CATEGORY_PRIORITY[a.categoryId] ?? 999
-    const pb = CATEGORY_PRIORITY[b.categoryId] ?? 999
+    const pa = props.priority[a.categoryId] ?? 999
+    const pb = props.priority[b.categoryId] ?? 999
     return pa - pb
   })
-
 
   return {
     tooltip: {
       trigger: 'axis',
-      axisPointer: { type: 'shadow' },
+      axisPointer: {type: 'shadow'},
       formatter: (params: any[]) => {
         if (!Array.isArray(params) || params.length === 0) {
           return ''
@@ -114,6 +108,7 @@ function buildStackedBarOption(source: CategoryMonthlySummary[]) {
       left: 60,
       right: 20,
       bottom: 40,
+      top: 130
     },
     xAxis: {
       type: 'category',
@@ -122,10 +117,7 @@ function buildStackedBarOption(source: CategoryMonthlySummary[]) {
     yAxis: {
       type: 'value',
       axisLabel: {
-        formatter: (value: number) =>
-            new Intl.NumberFormat('ru-RU', {
-              notation: 'compact',
-            }).format(value),
+        formatter: (value: number) => formatCurrency(value)
       },
     },
     series: series,

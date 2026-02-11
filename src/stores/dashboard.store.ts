@@ -38,21 +38,5 @@ export const useDashboardStore = defineStore('dashboard', {
         incrementalBalance: (state) =>
             state.summary?.monthlyData.map(m => m.incrementalBalance) ?? [],
 
-        pieChartData(): { value: number; name: string }[] {
-            return this.summary?.expenseCategories.map(category => ({
-                value: category?.total || 0,
-                name: category.name
-            })) || [];
-        },
-
-        pieChartDataSorted(): { value: number; name: string }[] {
-            return this.summary?.expenseCategories
-                .map(category => ({
-                    value: category?.total || 0,
-                    name: category.name
-                }))
-                .filter(item => item.value > 0)
-                .sort((a, b) => b.value - a.value) || [];
-        },
     },
 });

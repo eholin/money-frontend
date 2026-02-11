@@ -17,6 +17,7 @@ import {
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import VChart from 'vue-echarts';
+import {formatCurrency} from "@/utils/format.ts";
 
 use([
   BarChart,
@@ -32,15 +33,8 @@ const props = defineProps<{
   labels: string[];
   income: number[];
   expense: number[];
-  currency?: string; // по умолчанию RUB
+  currency?: string;
 }>();
-
-const currency = props.currency || '₽';
-
-// Функция форматирования чисел в валюту
-const formatCurrency = (value: number) => {
-  return value.toLocaleString('ru-RU', { minimumFractionDigits: 2 }) + ' ' + currency;
-};
 
 const option = computed(() => ({
   tooltip: {
@@ -56,14 +50,10 @@ const option = computed(() => ({
           .join('');
     },
   },
-  legend: { data: ['Income', 'Expense'] },
+  legend: { data: ['Доходы', 'Расходы'] },
   xAxis: {
     type: 'category',
     data: props.labels,
-    // axisLabel: {
-    //   rotate: 45,
-    //   formatter: (value: string) => value,
-    // },
   },
   yAxis: {
     type: 'value',
@@ -73,16 +63,14 @@ const option = computed(() => ({
   },
   series: [
     {
-      name: 'Income',
+      name: 'Доходы',
       type: 'bar',
-      // stack: 'total',
       data: props.income,
       itemStyle: { color: '#4caf50' },
     },
     {
-      name: 'Expense',
+      name: 'Расходы',
       type: 'bar',
-      // stack: 'total',
       data: props.expense,
       itemStyle: { color: '#f44336' },
     },

@@ -27,6 +27,7 @@ import {
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import VChart from 'vue-echarts';
+import {formatCurrency} from "@/utils/format.ts";
 
 use([
   BarChart,
@@ -41,13 +42,6 @@ const props = defineProps<{
   labels: string[];
   values: number[];
 }>();
-
-const currency = '₽';
-
-// Функция форматирования чисел в валюту
-const formatCurrency = (value: number) => {
-  return value.toLocaleString('ru-RU', { minimumFractionDigits: 2 }) + ' ' + currency;
-};
 
 const option = computed(() => ({
   tooltip: {

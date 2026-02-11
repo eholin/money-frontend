@@ -24,5 +24,4 @@ export interface WalletSummary {
     totalInvested: number;
     startDate: string;
     monthlyData: MonthlyWalletData[];
-    expenseCategories: FinancialCategorySummary[];
 }

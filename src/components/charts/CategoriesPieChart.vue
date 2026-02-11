@@ -27,6 +27,7 @@ import {
 } from 'echarts/components';
 import {CanvasRenderer} from 'echarts/renderers';
 import VChart from 'vue-echarts';
+import {formatCurrency} from "@/utils/format.ts";
 
 use([
   TitleComponent,
@@ -38,19 +39,24 @@ use([
 
 const props = defineProps<{
   title: string;
-  data: [{ value: number, name: string }];
+  data: { value: number, name: string }[];
 }>();
-
-const currency = '₽';
-
-// Функция форматирования чисел в валюту
-const formatCurrency = (value: number) => {
-  return value.toLocaleString('ru-RU', {minimumFractionDigits: 2}) + ' ' + currency;
-};
 
 const option = computed(() => ({
   tooltip: {
     trigger: 'item',
+    formatter: function (params: {name: string, value: number, percent: number}) {
+      const name = params.name;
+      const value = params.value;
+      const percent = params.percent;
+
+      let htmlString = `<div>`;
+      htmlString += `<strong>${name}:</strong> `;
+      htmlString += formatCurrency(value) + ` (${percent}%)`;
+      htmlString += `</div>`;
+
+      return htmlString;
+    }
   },
   series: [
     {

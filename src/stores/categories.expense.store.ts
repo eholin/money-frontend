@@ -24,9 +24,25 @@ export const useCategoriesExpenseStore = defineStore('categoriesExpense', {
             return this.categoriesExpense;
         },
 
-        // Мапа категорий по ID (настоящая Map)
         categoriesMap(): Map<number, FinancialCategorySummary> {
             return new Map(this.categoriesExpense.map(cat => [cat.id, cat]));
+        },
+
+        expensePieChartData(): { value: number; name: string }[] {
+            return this.categoriesExpense.map(category => ({
+                value: category?.total || 0,
+                name: category.name
+            })) || [];
+        },
+
+        expensePieChartDataSorted(): { value: number; name: string }[] {
+            return this.categoriesExpense
+                .map(category => ({
+                    value: category?.total || 0,
+                    name: category.name
+                }))
+                .filter(item => item.value > 0)
+                .sort((a, b) => b.value - a.value) || [];
         },
     },
 });
